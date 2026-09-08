@@ -11,6 +11,7 @@ public class AIServiceTests {
 
     @Autowired
     private AIservice aiService;
+    
 
     @Test
     void testGetJoke() {
@@ -20,7 +21,15 @@ public class AIServiceTests {
         System.out.println("AI Joke:");
         System.out.println(joke.getJoke());
     }
+    @Test
+    void checkKey() {
 
+        String key = System.getenv("GROQ_API_KEY");
+
+        System.out.println("Key exists: " + (key != null));
+        System.out.println("Key length: " + 
+            (key == null ? 0 : key.length()));
+    }
     @Test
     void testEmbeddings() {
 
@@ -35,5 +44,20 @@ public class AIServiceTests {
         }
 
         System.out.println();
+    }
+    
+    @Test
+    public void testIngestDataToVectorStore() {
+		
+		aiService.ingestMovieData();
+		
+		System.out.println("Document ingested into the vector store.");
+	}
+    
+    @Test
+    public void testSimilaritySearch() {
+    			String query = "A movie about a thief who enters dreams.";
+    			var response =aiService.similaritySearch(query);
+    			System.out.println(response);
     }
 }
